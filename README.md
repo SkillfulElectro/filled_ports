@@ -1,2 +1,2 @@
 # filled_ports
-simple command line app , to check which ports on localhost are filled
+so i was curious about which ports on my device are filled so if you are too , check it out ;)
