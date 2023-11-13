@@ -1,5 +1,6 @@
 #include <QCoreApplication>
 #include <QtNetwork/QTcpServer>
+#include <QtNetwork/QTcpSocket>
 #include <iostream>
 
 int main(int argc, char *argv[])
@@ -27,6 +28,23 @@ int main(int argc, char *argv[])
     }
 
     std::cout << "\ndone";
+
+    QObject::connect(server , &QTcpServer::newConnection , [=](){
+        std::cout << "\n\nNew Tester Connected !";
+        QTcpSocket* socket = server->nextPendingConnection();
+        QObject::connect(socket , &QTcpSocket::readyRead , [=](){
+            std::cout << "\n\nNew Data Recived:\n";
+            std::cout << QString(socket->readAll()).toStdString();
+            socket->close();
+        });
+    });
+
+    int port;
+    std::cout << "\nInsert the port for your test server : ";
+    std::cin >> port;
+    server->listen(QHostAddress::Any , port);
+    std::cout << "\nTest Tcp Sockets are ready :";
+
 
     return a.exec();
 }
